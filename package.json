@@ -1,0 +1,100 @@
+{
+  "name": "syberos-git-cz",
+  "version": "1.1.2",
+  "description": "syberos git commit, git-cz",
+  "main": "dist/cz.js",
+  "bin": {
+    "git-cz": "./bin/git-cz.js",
+    "gitcz": "./bin/git-cz.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:syberos-team/syberos-git-cz.git"
+  },
+  "homepage": "https://github.com/syberos-team/syberos-git-cz",
+  "license": "Unlicense",
+  "scripts": {
+    "lint": "yarn eslint",
+    "clean": "rimraf dist binaries",
+    "build": "yarn build:cli && yarn build:cz",
+    "build:cli": "browserify --node -o dist/cli.js lib/cli.js",
+    "build:cz": "browserify --node -o dist/cz.js --standalone prompter lib/cz.js",
+    "build:readme": "mmarkdown",
+    "build:binaries": "mkdirp binaries && pkg lib/cli.js --out-path binaries",
+    "test": "mocha",
+    "precommit": "yarn lint",
+    "semantic-release": "semantic-release",
+    "eslint": "eslint lib/*.js"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "3.0.4",
+    "@semantic-release/git": "7.0.16",
+    "@semantic-release/github": "5.5.4",
+    "@semantic-release/npm": "5.2.0",
+    "any-shell-escape": "0.1.1",
+    "browserify": "16.5.0",
+    "chalk": "2.4.2",
+    "commitizen": "2.10.1",
+    "eslint": "4.19.1",
+    "eslint-config-mailonline": "9.0.0",
+    "husky": "0.14.3",
+    "inquirer": "6.5.2",
+    "minimist": "1.2.0",
+    "pkg": "4.4.0",
+    "rimraf": "2.7.1",
+    "semantic-release": "15.13.27",
+    "signale": "1.4.0",
+    "word-wrap": "1.2.3",
+    "mocha": "6.2.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./dist/cz.js"
+    }
+  },
+  "mmarkdown": {
+    "src": "./build/readme.md",
+    "out": "./README.md",
+    "scripts": "./build/readme.js",
+    "backup": false
+  },
+  "dependencies": {
+    "global": "^4.3.2"
+  },
+  "release": {
+    "verifyConditions": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ],
+    "prepare": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ],
+    "publish": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "binaries/cli-linux",
+              "label": "Linux binary"
+            },
+            {
+              "path": "binaries/cli-macos",
+              "label": "Mac binary"
+            },
+            {
+              "path": "binaries/cli-win.exe",
+              "label": "Windows binary"
+            }
+          ]
+        }
+      ]
+    ]
+  }
+}
