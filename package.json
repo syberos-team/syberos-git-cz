@@ -1,6 +1,6 @@
 {
   "name": "syberos-git-cz",
-  "version": "1.1.2",
+  "version": "1.0.0",
   "description": "syberos git commit, git-cz",
   "main": "dist/cz.js",
   "bin": {
